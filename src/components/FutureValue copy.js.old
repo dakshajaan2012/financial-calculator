@@ -1,0 +1,504 @@
+import React, { useState } from "react";
+import { Line, Doughnut } from "react-chartjs-2";
+import "chart.js/auto"; // Import the necessary Chart.js components
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addMonths, format } from "date-fns";
+import {
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  Paper,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Collapse,
+} from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+
+const FutureValue = () => {
+  const [startAmount, setStartAmount] = useState("");
+  const [yearlyDeposit, setYearlyDeposit] = useState("");
+  const [annualInterest, setAnnualInterest] = useState("");
+  const [noOfYears, setNoOfYears] = useState("");
+  const [depositTiming, setDepositTiming] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [results, setResults] = useState({
+    totalReturns: "",
+    totalInterest: "",
+    totalDeposit: "",
+    presentValue: "",
+  });
+
+  const [yearlySchedule, setYearlySchedule] = useState([]);
+  const [expandedYears, setExpandedYears] = useState({});
+
+  const handleCalculate = () => {
+    let prin_x1 = parseFloat(startAmount);
+    if (isNaN(prin_x1)) {
+      alert('Please enter a valid "Starting Amount"');
+      return;
+    }
+
+    let pmt_x1 = parseFloat(yearlyDeposit);
+    if (isNaN(pmt_x1)) {
+      alert('Please enter a valid "Yearly Deposit"');
+      return;
+    }
+
+    let rate_x = parseFloat(annualInterest);
+    if (isNaN(rate_x)) {
+      alert('Please enter a valid "Annual Interest"');
+      return;
+    }
+
+    let yrs_x = parseFloat(noOfYears);
+    if (isNaN(yrs_x)) {
+      alert('Please enter a valid "No of Years"');
+      return;
+    }
+
+    let b_e_x = parseInt(depositTiming);
+    if (isNaN(b_e_x) || (b_e_x !== 0 && b_e_x !== 1)) {
+      alert("Please enter 1 for Beginning or 0 for End");
+      return;
+    }
+
+    let ir = rate_x / 100;
+    let fv = 0;
+    let totalInterest = 0;
+    let totalDeposit = 0;
+
+    const schedule = [];
+    let balance = prin_x1;
+
+    for (let i = 1; i <= yrs_x; i++) {
+      let startBalance = balance;
+
+      // Calculate yearly deposit based on timing
+      let yearlyDepositWithInterest = b_e_x === 1 ? pmt_x1 * (1 + ir) : pmt_x1;
+      let endDeposit = startBalance + yearlyDepositWithInterest;
+
+      // Calculate interest
+      let interest = startBalance * ir;
+      totalInterest += interest;
+
+      // Accumulate total deposit
+      totalDeposit += pmt_x1;
+
+      // Yearly balance includes starting amount, yearly deposits, and interest
+      balance = startBalance + yearlyDepositWithInterest + interest;
+
+      const monthlySchedule = [];
+      let monthlyBalance = startBalance;
+
+      for (let j = 0; j < 12; j++) {
+        let monthlyInterest = monthlyBalance * (ir / 12);
+        monthlyBalance +=
+          monthlyInterest + (b_e_x === 1 && j === 0 ? pmt_x1 : 0);
+        monthlySchedule.push({
+          Month: format(addMonths(startDate, (i - 1) * 12 + j), "MMMM yyyy"),
+          "Monthly Interest": monthlyInterest.toFixed(2),
+          "Monthly Balance": monthlyBalance.toFixed(2),
+        });
+      }
+
+      schedule.push({
+        Year: i,
+        "Starting Deposit": startBalance.toFixed(2),
+        "Ending Deposit": endDeposit.toFixed(2),
+        Interest: interest.toFixed(2),
+        "Yearly Balance": balance.toFixed(2),
+        MonthlySchedule: monthlySchedule,
+      });
+    }
+
+    // Calculate total returns (including interest)
+    fv = balance; // Final balance after all years
+    let totalReturns = fv.toFixed(2);
+
+    // Calculate present value
+    let presentValue = fv * (1 / (1 + ir) ** yrs_x);
+
+    setResults({
+      totalReturns: `$${totalReturns}`,
+      totalInterest: `$${totalInterest.toFixed(2)}`,
+      totalDeposit: `$${totalDeposit.toFixed(2)}`,
+      presentValue: `$${presentValue.toFixed(2)}`,
+    });
+
+    setYearlySchedule(schedule);
+  };
+
+  const handleClear = () => {
+    setStartAmount("");
+    setYearlyDeposit("");
+    setAnnualInterest("");
+    setNoOfYears("");
+    setDepositTiming("");
+    setStartDate(new Date());
+    setResults({
+      totalReturns: "",
+      totalInterest: "",
+      totalDeposit: "",
+      presentValue: "",
+    });
+
+    setYearlySchedule([]);
+  };
+
+  const toggleYear = (year) => {
+    setExpandedYears((prevExpandedYears) => ({
+      ...prevExpandedYears,
+      [year]: !prevExpandedYears[year],
+    }));
+  };
+
+  return (
+    <Paper style={{ padding: 16, maxWidth: 1200, margin: "0 auto" }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Future Value
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Starting Amount"
+            fullWidth
+            type="number"
+            value={startAmount}
+            onChange={(e) => setStartAmount(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Yearly Deposit"
+            fullWidth
+            type="number"
+            value={yearlyDeposit}
+            onChange={(e) => setYearlyDeposit(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Annual Interest"
+            fullWidth
+            type="number"
+            value={annualInterest}
+            onChange={(e) => setAnnualInterest(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="No of Years"
+            fullWidth
+            type="number"
+            value={noOfYears}
+            onChange={(e) => setNoOfYears(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Deposit Timing (1 for Beginning, 0 for End)"
+            fullWidth
+            type="number"
+            value={depositTiming}
+            onChange={(e) => setDepositTiming(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Typography>Start Date:</Typography>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            dateFormat="dd MMMM yyyy"
+            showDayMonthYearPicker
+            customInput={<TextField fullWidth />}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCalculate}
+            fullWidth
+          >
+            Show Results
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleClear}
+            fullWidth
+          >
+            Clear
+          </Button>
+        </Grid>
+      </Grid>
+
+      <Typography
+        variant="h5"
+        align="center"
+        gutterBottom
+        style={{ marginTop: 20 }}
+      >
+        Results Summary
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Total Returns"
+            fullWidth
+            value={results.totalReturns}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Total Interest"
+            fullWidth
+            value={results.totalInterest}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Total Deposit"
+            fullWidth
+            value={results.totalDeposit}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Present Value"
+            fullWidth
+            value={results.presentValue}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Grid>
+      </Grid>
+
+      <Typography
+        variant="h5"
+        align="center"
+        gutterBottom
+        style={{ marginTop: 20 }}
+      >
+        Yearly Schedule
+      </Typography>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Year</TableCell>
+              <TableCell>Starting Deposit</TableCell>
+              {/*  <TableCell>Ending Deposit</TableCell> */}
+              <TableCell>Interest</TableCell>
+              <TableCell>Yearly Balance</TableCell>
+              <TableCell>Details</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {yearlySchedule.map((item, index) => (
+              <React.Fragment key={index}>
+                <TableRow>
+                  <TableCell>{item.Year}</TableCell>
+                  <TableCell>${item["Starting Deposit"]}</TableCell>
+                  {/*     <TableCell>${item["Ending Deposit"]}</TableCell> */}
+                  <TableCell>${item.Interest}</TableCell>
+                  <TableCell>${item["Yearly Balance"]}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      aria-label="expand row"
+                      size="small"
+                      onClick={() => toggleYear(item.Year)}
+                    >
+                      {expandedYears[item.Year] ? (
+                        <ExpandLess />
+                      ) : (
+                        <ExpandMore />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    style={{ paddingBottom: 0, paddingtop: 0 }}
+                    colSpan={6}
+                  >
+                    <Collapse
+                      in={expandedYears[item.Year]}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <Table size="small" aria-label="purchases">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Month</TableCell>
+                            <TableCell>Monthly Interest</TableCell>
+                            <TableCell>Monthly Balance</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {item.MonthlySchedule.map((month, index) => (
+                            <TableRow key={index}>
+                              <TableCell>{month.Month}</TableCell>
+                              <TableCell>
+                                ${month["Monthly Interest"]}
+                              </TableCell>
+                              <TableCell>${month["Monthly Balance"]}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Typography
+        variant="h5"
+        align="center"
+        gutterBottom
+        style={{ marginTop: 20 }}
+      >
+        Charts
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <Paper style={{ padding: 16, height: "380px" }}>
+            <Line
+              data={{
+                labels: yearlySchedule.map((item) => item.Year),
+                datasets: [
+                  {
+                    label: "Starting Deposit",
+                    data: yearlySchedule.map((item) =>
+                      parseFloat(item["Starting Deposit"])
+                    ),
+                    fill: false,
+                    borderColor: "rgb(75, 192, 192)",
+                    tension: 0.1,
+                    pointRadius: 0,
+                  },
+                  /*          {
+                    label: "Ending Deposit",
+                    data: yearlySchedule.map((item) =>
+                      parseFloat(item["Ending Deposit"])
+                    ),
+                    fill: false,
+                    borderColor: "rgb(153, 102, 255)",
+                    tension: 0.1,
+                    pointRadius: 0,
+                  }, */
+                  {
+                    label: "Interest",
+                    data: yearlySchedule.map((item) =>
+                      parseFloat(item.Interest)
+                    ),
+                    fill: false,
+                    borderColor: "rgb(255, 206, 86)",
+                    tension: 0.1,
+                    pointRadius: 0,
+                  },
+                  {
+                    label: "Yearly Balance",
+                    data: yearlySchedule.map((item) =>
+                      parseFloat(item["Yearly Balance"])
+                    ),
+                    fill: false,
+                    borderColor: "rgb(255, 99, 132)",
+                    tension: 0.1,
+                    pointRadius: 0,
+                  },
+                ],
+              }}
+              options={{
+                plugins: {
+                  legend: {
+                    position: "top",
+                    labels: {
+                      paddingRight: 10,
+                    },
+                  },
+                  datalabels: false,
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: "Year",
+                    },
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: "Amount ($)",
+                    },
+                  },
+                },
+              }}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper style={{ padding: 16, height: "380px" }}>
+            <Doughnut
+              data={{
+                labels: ["Starting Amount", "Yearly Deposit", "Total Interest"],
+                datasets: [
+                  {
+                    label: "Financial Overview",
+                    data: [
+                      parseFloat(startAmount),
+                      yearlyDeposit * noOfYears,
+                      parseFloat(results.totalInterest.replace("$", "")),
+                    ],
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.6)",
+                      "rgba(54, 162, 235, 0.6)",
+                      "rgba(255, 206, 86, 0.6)",
+                    ],
+                    cutout: "50%", // Makes it a donut chart
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+
+                legend: {
+                  position: "top",
+                  labels: {
+                    padding: 20, // Add spacing between the legend and the chart
+                  },
+                },
+              }}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
+    </Paper>
+  );
+};
+
+export default FutureValue;
