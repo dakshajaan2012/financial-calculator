@@ -95,8 +95,8 @@ const MortgageCalculator = () => {
   const totalPayments = totalPrincipal + totalInterest;
 
   const data = [
-    ((totalPrincipal / totalPayments) * 100).toFixed(0),
-    ((totalInterest / totalPayments) * 100).toFixed(0),
+    ((totalPrincipal / totalPayments) * 100).toFixed(1),
+    ((totalInterest / totalPayments) * 100).toFixed(1),
   ];
 
   return (

@@ -172,9 +172,9 @@ const FutureValue = () => {
   const totalAmount = totalStartingAmount + totalYearlyDeposits + totalInterest;
 
   const data = [
-    ((totalStartingAmount / totalAmount) * 100).toFixed(0),
-    ((totalYearlyDeposits / totalAmount) * 100).toFixed(0),
-    ((totalInterest / totalAmount) * 100).toFixed(0),
+    ((totalStartingAmount / totalAmount) * 100).toFixed(1),
+    ((totalYearlyDeposits / totalAmount) * 100).toFixed(1),
+    ((totalInterest / totalAmount) * 100).toFixed(1),
   ];
 
   return (

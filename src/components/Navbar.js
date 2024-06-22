@@ -1,19 +1,19 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+//import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+/* const useStyles = makeStyles((theme) => ({
   button: {
     color: "red", // Initial color for the button text
     "&.Mui-disabled": {
       color: "lightgrey", // Color for disabled state with high specificity
     },
   },
-}));
+})); */
 
 const Navbar = () => {
-  const classes = useStyles();
+  //const classes = useStyles();
   const location = useLocation();
 
   return (
@@ -23,7 +23,6 @@ const Navbar = () => {
           Financial Calculator
         </Typography>
         <Button
-          className={classes.button}
           component={Link}
           to="/future-value"
           disabled={location.pathname === "/future-value"}
@@ -31,7 +30,6 @@ const Navbar = () => {
           Future Value
         </Button>
         <Button
-          className={classes.button}
           component={Link}
           to="/mortgage-calculator"
           disabled={location.pathname === "/mortgage-calculator"}
@@ -39,7 +37,6 @@ const Navbar = () => {
           Mortgage
         </Button>
         <Button
-          className={classes.button}
           component={Link}
           to="/effective-interest-rate"
           disabled={location.pathname === "/effective-interest-rate"}
@@ -47,7 +44,6 @@ const Navbar = () => {
           Effective Interest
         </Button>
         <Button
-          className={classes.button}
           component={Link}
           to="/npv-calculator"
           disabled={location.pathname === "/npv-calculator"}
