@@ -1,18 +1,13 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  makeStyles,
-} from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    color: "black",
-    "&:disabled": {
-      color: "grey",
+    color: "red", // Initial color for the button text
+    "&.Mui-disabled": {
+      color: "lightgrey", // Color for disabled state with high specificity
     },
   },
 }));
@@ -24,7 +19,7 @@ const Navbar = () => {
   return (
     <AppBar position="fixed" style={{ backgroundColor: "lightgrey" }}>
       <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1, color: "black" }}>
+        <Typography variant="h6" style={{ flexGrow: 1, color: "#1976D2" }}>
           Financial Calculator
         </Typography>
         <Button

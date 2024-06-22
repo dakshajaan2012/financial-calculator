@@ -19,8 +19,10 @@ import {
   TableHead,
   TableRow,
   Collapse,
-} from "@material-ui/core";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
+} from "@mui/material";
+//import { ExpandLess, ExpandMore } from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const FutureValue = () => {
   const [startAmount, setStartAmount] = useState("");
@@ -176,10 +178,11 @@ const FutureValue = () => {
   ];
 
   return (
-    <Paper style={{ padding: 16, maxWidth: 1200, margin: "0 auto" }}>
-      <Typography variant="h4" align="center" gutterBottom>
+    <Paper style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
+      <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
         Future Value
       </Typography>
+      <br />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -257,6 +260,7 @@ const FutureValue = () => {
           </Button>
         </Grid>
       </Grid>
+      <br />
 
       <Typography
         variant="h5"
@@ -266,6 +270,8 @@ const FutureValue = () => {
       >
         Results Summary
       </Typography>
+      <br />
+
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -308,6 +314,7 @@ const FutureValue = () => {
           />
         </Grid>
       </Grid>
+      <br />
 
       <Typography
         variant="h5"

@@ -17,7 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const MortgageCalculator = () => {
   const [principal, setPrincipal] = useState("");
@@ -100,10 +100,11 @@ const MortgageCalculator = () => {
   ];
 
   return (
-    <Paper style={{ padding: 16, maxWidth: 1200, margin: "0 auto" }}>
-      <Typography variant="h4" align="center" gutterBottom>
+    <Paper style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
+      <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
         Mortgage
       </Typography>
+      <br />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -172,6 +173,7 @@ const MortgageCalculator = () => {
       >
         Payment Summary
       </Typography>
+      <br />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <TextField
@@ -204,6 +206,7 @@ const MortgageCalculator = () => {
           />
         </Grid>
       </Grid>
+      <br />
 
       <Typography
         variant="h5"

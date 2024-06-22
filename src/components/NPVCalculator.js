@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Grid, Typography, Paper } from "@material-ui/core";
+import { TextField, Button, Grid, Typography, Paper } from "@mui/material";
 import { Line } from "react-chartjs-2";
 
 const NPVCalculator = () => {
@@ -133,15 +133,16 @@ const NPVCalculator = () => {
   return (
     <Paper
       style={{
-        padding: 16,
+        padding: 20,
         maxWidth: 1200,
         margin: "20px auto",
         marginTop: "20px",
       }}
     >
-      <Typography variant="h4" align="center" gutterBottom>
+      <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
         NPV & IRR Calculator with Cash Flow Chart
       </Typography>
+      <br />
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
@@ -212,6 +213,7 @@ const NPVCalculator = () => {
       >
         Results Summary
       </Typography>
+      <br />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField

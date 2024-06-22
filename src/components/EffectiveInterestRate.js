@@ -13,7 +13,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Chart } from "chart.js";
@@ -163,10 +163,15 @@ const EffectiveInterestRate = () => {
     <Container>
       <br />
       <Box display="flex" justifyContent="center" mt={4}>
-        <Typography variant="h4" gutterBottom align="center" paddingTop="20px">
+        <Typography
+          variant="h4"
+          gutterBottom
+          align="center"
+          paddingTop="20px"
+          paddingBottom="20px"
+        >
           Effective Interest Rate
         </Typography>
-        <br />
       </Box>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -232,6 +237,7 @@ const EffectiveInterestRate = () => {
         <Typography variant="h6" align="center">
           Results Summary:
         </Typography>
+        <br />
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
