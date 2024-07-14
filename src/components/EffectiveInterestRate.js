@@ -58,6 +58,7 @@ const EffectiveInterestRate = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     if (name === "fixedDeposit") {
       setFixedDeposit(value);
     } else if (name === "annualInterestRate") {
@@ -65,12 +66,25 @@ const EffectiveInterestRate = () => {
     } else if (name === "numberOfYears") {
       setNumberOfYears(value);
     }
+
+    if (name === isNaN) {
+      alert(`Please fill out the "${name}" field`);
+    }
   };
 
   const calculateResults = () => {
-    const interest = parseFloat(annualInterestRate) / 100;
     const principal = parseFloat(fixedDeposit);
+    if (isNaN) {
+      alert(`Please fill out "Fixed Deposit"`);
+    }
+    const interest = parseFloat(annualInterestRate) / 100;
+    if (isNaN) {
+      alert(`Please fill out "Annual Interest"`);
+    }
     const years = parseFloat(numberOfYears);
+    if (isNaN) {
+      alert(`Please fill out "Number of Years"`);
+    }
 
     const yearlyInterest =
       principal * Math.pow(1 + interest, years) - principal;

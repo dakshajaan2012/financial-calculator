@@ -36,8 +36,20 @@ const MortgageCalculator = () => {
     const r = parseFloat(annualInterestRate) / 100 / 12;
     const n = parseInt(loanTermYears) * 12;
 
-    if (isNaN(P) || isNaN(r) || isNaN(n)) {
+    /*     if (isNaN(P) || isNaN(r) || isNaN(n)) {
       alert("Please enter valid inputs");
+      return; */
+
+    if (isNaN(P)) {
+      alert('Please enter a valid "Loan Amount"');
+    }
+
+    if (isNaN(r)) {
+      alert('Please enter a valid "Annual Interest"');
+    }
+
+    if (isNaN(n)) {
+      alert('Please enter a valid "Loan Term (Years)"');
       return;
     }
 
