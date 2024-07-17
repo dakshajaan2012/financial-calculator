@@ -76,6 +76,7 @@ const FutureValue = () => {
     let fv = 0;
     let totalInterest = 0;
     let totalDeposit = 0;
+    let periodicDeposit = 0;
 
     const schedule = [];
     let balance = prin_x1;
@@ -95,7 +96,9 @@ const FutureValue = () => {
       totalInterest += interest;
 
       // Accumulate total deposit
-      totalDeposit += pmt_x1;
+
+      let periodicTotal = (periodicDeposit += pmt_x1);
+      totalDeposit = prin_x1 + periodicTotal;
 
       // Yearly balance includes starting amount, yearly deposits, and interest
       balance = startBalance + yearlyDepositWithInterest + interest;
