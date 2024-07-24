@@ -42,10 +42,12 @@ const MortgageCalculator = () => {
 
     if (isNaN(P)) {
       alert('Please enter a valid "Loan Amount"');
+      return;
     }
 
     if (isNaN(r)) {
       alert('Please enter a valid "Annual Interest"');
+      return;
     }
 
     if (isNaN(n)) {

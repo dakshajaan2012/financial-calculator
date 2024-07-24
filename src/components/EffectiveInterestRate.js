@@ -74,16 +74,19 @@ const EffectiveInterestRate = () => {
 
   const calculateResults = () => {
     const principal = parseFloat(fixedDeposit);
-    if (isNaN) {
+    if (isNaN(principal)) {
       alert(`Please fill out "Fixed Deposit"`);
+      return;
     }
     const interest = parseFloat(annualInterestRate) / 100;
-    if (isNaN) {
+    if (isNaN(interest)) {
       alert(`Please fill out "Annual Interest"`);
+      return;
     }
     const years = parseFloat(numberOfYears);
-    if (isNaN) {
+    if (isNaN(years)) {
       alert(`Please fill out "Number of Years"`);
+      return;
     }
 
     const yearlyInterest =
@@ -95,7 +98,7 @@ const EffectiveInterestRate = () => {
     const monthlyInterest =
       principal * Math.pow(1 + interest / 12, 12 * years) - principal;
     const dailyInterest =
-      principal * Math.pow(1 + interest / 365, 365 * years) - principal;
+      principal * Math.pow(1 + interest / 360, 365 * years) - principal;
 
     const yearlyTotal = principal + yearlyInterest;
     const semiAnnualTotal = principal + semiAnnualInterest;

@@ -22,13 +22,29 @@ const NPVCalculator = () => {
     ],
   });
 
-  const handleCalculate = () => {
+  /*   const handleCalculate = () => {
     if (
       !initialInvestment ||
       !cashFlows.every((cf) => cf !== "") ||
       !discountRate
     ) {
       alert("Please enter all fields");
+      return;
+    } */
+
+  const handleCalculate = () => {
+    if (isNaN(initialInvestment) || initialInvestment === "") {
+      alert("Please fill out initial investment");
+      return;
+    }
+
+    if (cashFlows.some((cf) => isNaN(cf) || cf === "")) {
+      alert("Please add valid cashflow");
+      return;
+    }
+
+    if (isNaN(discountRate) || discountRate === "") {
+      alert("Please fill out discount rate");
       return;
     }
 
