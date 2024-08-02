@@ -207,7 +207,7 @@ const FutureValue = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Annual Interest"
+            label="Annual Interest Rate (%)"
             fullWidth
             type="number"
             value={annualInterest}
@@ -216,7 +216,7 @@ const FutureValue = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="No of Years"
+            label="Number of Years"
             fullWidth
             type="number"
             value={noOfYears}
@@ -343,9 +343,19 @@ const FutureValue = () => {
           <TableBody>
             {yearlySchedule.map((item, index) => (
               <React.Fragment key={index}>
-                <TableRow>
-                  <TableCell>{item.Year}</TableCell>
-                  <TableCell>${item["Starting Deposit"]}</TableCell>
+                {/*         <TableRow> */}
+                <TableRow
+                  key={index}
+                  sx={{
+                    backgroundColor:
+                      /*     index % 2 === 0 ? "#f5f5f5" : "#ffffff", */
+                      index % 2 === 0 ? "#f5f5f5" : "#F7C5CC",
+                  }}
+                >
+                  <TableCell sx={{ height: 0.1 }}>{item.Year}</TableCell>
+                  <TableCell sx={{ height: 0.1 }}>
+                    ${item["Starting Deposit"]}
+                  </TableCell>
                   <TableCell>${item["Yearly Deposit"]}</TableCell>
                   {/*        <TableCell>{yearlyData["Ending Deposit"]}</TableCell> */}
                   <TableCell>${item.Interest}</TableCell>
@@ -384,7 +394,13 @@ const FutureValue = () => {
                         </TableHead>
                         <TableBody>
                           {item.MonthlySchedule.map((month, index) => (
-                            <TableRow key={index}>
+                            <TableRow
+                              key={index}
+                              sx={{
+                                backgroundColor:
+                                  index % 2 === 0 ? "#f5f5f5" : "#FFE9D0",
+                              }}
+                            >
                               <TableCell>{month.Month}</TableCell>
                               <TableCell>
                                 ${month["Monthly Interest"]}

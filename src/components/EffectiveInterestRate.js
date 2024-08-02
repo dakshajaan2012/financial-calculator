@@ -267,32 +267,32 @@ const EffectiveInterestRate = () => {
             <TableBody>
               <TableRow>
                 <TableCell>Yearly</TableCell>
-                <TableCell align="right">{results.yearly.interest}</TableCell>
-                <TableCell align="right">{results.yearly.total}</TableCell>
+                <TableCell align="right">${results.yearly.interest}</TableCell>
+                <TableCell align="right">${results.yearly.total}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Semi-Annual</TableCell>
                 <TableCell align="right">
-                  {results.semiAnnual.interest}
+                  ${results.semiAnnual.interest}
                 </TableCell>
-                <TableCell align="right">{results.semiAnnual.total}</TableCell>
+                <TableCell align="right">${results.semiAnnual.total}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Quarterly</TableCell>
                 <TableCell align="right">
-                  {results.quarterly.interest}
+                  ${results.quarterly.interest}
                 </TableCell>
-                <TableCell align="right">{results.quarterly.total}</TableCell>
+                <TableCell align="right">${results.quarterly.total}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Monthly</TableCell>
-                <TableCell align="right">{results.monthly.interest}</TableCell>
-                <TableCell align="right">{results.monthly.total}</TableCell>
+                <TableCell align="right">${results.monthly.interest}</TableCell>
+                <TableCell align="right">${results.monthly.total}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Daily</TableCell>
-                <TableCell align="right">{results.daily.interest}</TableCell>
-                <TableCell align="right">{results.daily.total}</TableCell>
+                <TableCell align="right">${results.daily.interest}</TableCell>
+                <TableCell align="right">${results.daily.total}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -340,6 +340,12 @@ const EffectiveInterestRate = () => {
                   },
                 },
               ],
+              y: {
+                title: {
+                  display: true,
+                  text: "Amount ($)",
+                },
+              },
             },
           }}
         />

@@ -3,6 +3,10 @@ import { Line, Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import DatePicker from "react-datepicker";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+//import { DatePicker } from "@mui/x-date-pickers";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, addMonths } from "date-fns";
 import {
@@ -21,14 +25,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-/* const formatNumberWithCommas = (number) => {
-  return new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(number);
-}; */
+//import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const MortgageCalculator = () => {
   const [principal, setPrincipal] = useState("");
@@ -41,6 +38,14 @@ const MortgageCalculator = () => {
     totalInterest: "",
     totalPrincipal: "",
   });
+  const [expandedYears, setExpandedYears] = useState({});
+
+  const toggleYear = (year) => {
+    setExpandedYears((prev) => ({
+      ...prev,
+      [year]: !prev[year],
+    }));
+  };
 
   const handleCalculate = () => {
     const P = parseFloat(principal);
@@ -86,6 +91,7 @@ const MortgageCalculator = () => {
       totalInterest: `$${cumulativeInterest.toFixed(2)}`,
       totalPrincipal: `$${P.toFixed(2)}`,
     });
+    setExpandedYears({});
   };
 
   const handleClear = () => {
@@ -112,7 +118,33 @@ const MortgageCalculator = () => {
     }, {});
   };
 
-  const groupedSchedule = groupByYear(schedule);
+  const calculateYearlyTotals = (schedule) => {
+    return Object.entries(groupByYear(schedule)).map(([year, months]) => {
+      const totalPayments = months
+        .reduce((acc, month) => acc + parseFloat(month["Monthly Payment"]), 0)
+        .toFixed(2);
+      const totalInterest = months
+        .reduce((acc, month) => acc + parseFloat(month["Interest Paid"]), 0)
+        .toFixed(2);
+      const totalPrincipal = months
+        .reduce((acc, month) => acc + parseFloat(month["Principal Paid"]), 0)
+        .toFixed(2);
+      const endingBalance = months[months.length - 1].Balance;
+
+      return {
+        year,
+        totalPayments,
+        totalInterest,
+        totalPrincipal,
+        endingBalance,
+        months,
+      };
+    });
+  };
+
+  const yearlySchedule = calculateYearlyTotals(schedule);
+
+  //const groupedSchedule = groupByYear(schedule);
 
   const totalPrincipal = parseFloat(principal);
   const totalInterest = parseFloat(summary.totalInterest.replace("$", ""));
@@ -125,10 +157,9 @@ const MortgageCalculator = () => {
 
   return (
     <Paper style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
-      <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
+      <Typography variant="h4" align="center" gutterBottom>
         Mortgage Calculator
       </Typography>
-      <br />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -187,8 +218,6 @@ const MortgageCalculator = () => {
           </Button>
         </Grid>
       </Grid>
-      <br />
-
       <Typography
         variant="h5"
         align="center"
@@ -197,16 +226,13 @@ const MortgageCalculator = () => {
       >
         Payment Summary
       </Typography>
-      <br />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <TextField
             label="Total Payments"
             fullWidth
             value={summary.totalPayments}
-            InputProps={{
-              readOnly: true,
-            }}
+            InputProps={{ readOnly: true }}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -214,9 +240,7 @@ const MortgageCalculator = () => {
             label="Total Interest"
             fullWidth
             value={summary.totalInterest}
-            InputProps={{
-              readOnly: true,
-            }}
+            InputProps={{ readOnly: true }}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -224,34 +248,40 @@ const MortgageCalculator = () => {
             label="Total Principal"
             fullWidth
             value={summary.totalPrincipal}
-            InputProps={{
-              readOnly: true,
-            }}
+            InputProps={{ readOnly: true }}
           />
         </Grid>
       </Grid>
-      <br />
-
       <Typography
         variant="h5"
         align="center"
         gutterBottom
         style={{ marginTop: 20 }}
       >
-        Payment Schedule
+        Yearly Payment Summary
       </Typography>
-      {Object.keys(groupedSchedule).map((year, index) => (
-        <Accordion key={index}>
+      {yearlySchedule.map((yearData, index) => (
+        <Accordion key={index} style={{ marginBottom: 10 }}>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={
+              expandedYears[yearData.year] ? (
+                <ExpandLessIcon />
+              ) : (
+                <ExpandMoreIcon />
+              )
+            }
             aria-controls={`panel${index}-content`}
             id={`panel${index}-header`}
+            onClick={() => toggleYear(yearData.year)}
           >
-            <Typography>{year}</Typography>
+            <Typography>
+              {yearData.year}: Total Payments: ${yearData.totalPayments} | Total
+              Interest: ${yearData.totalInterest}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <TableContainer>
-              <Table>
+              <Table style={{ minWidth: 650 }}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Period</TableCell>
@@ -266,25 +296,17 @@ const MortgageCalculator = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {groupedSchedule[year].map((item, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{
-                        height: "10px",
-                        backgroundColor:
-                          /*     index % 2 === 0 ? "#f5f5f5" : "#ffffff", */
-                          index % 2 === 0 ? "#f5f5f5" : "#F7C5CC",
-                      }}
-                    >
-                      <TableCell>{item.Period}</TableCell>
-                      <TableCell>{item["Payment Date"]}</TableCell>
-                      <TableCell>${item["Monthly Payment"]}</TableCell>
-                      <TableCell>${item["Beginning Balance"]}</TableCell>
-                      <TableCell>${item["Principal Paid"]}</TableCell>
-                      <TableCell>${item["Interest Paid"]}</TableCell>
-                      <TableCell>${item["Cumulative Payment"]}</TableCell>
-                      <TableCell>${item["Cumulative Interest"]}</TableCell>
-                      <TableCell>${item.Balance}</TableCell>
+                  {yearData.months.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{row.Period}</TableCell>
+                      <TableCell>{row["Payment Date"]}</TableCell>
+                      <TableCell>{row["Monthly Payment"]}</TableCell>
+                      <TableCell>{row["Beginning Balance"]}</TableCell>
+                      <TableCell>{row["Principal Paid"]}</TableCell>
+                      <TableCell>{row["Interest Paid"]}</TableCell>
+                      <TableCell>{row["Cumulative Payment"]}</TableCell>
+                      <TableCell>{row["Cumulative Interest"]}</TableCell>
+                      <TableCell>{row.Balance}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

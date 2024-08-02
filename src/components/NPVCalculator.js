@@ -262,7 +262,26 @@ const NPVCalculator = () => {
         Chart:
       </Typography>
       <Grid item xs={12}>
-        <Line data={chartData} />
+        {/*         <Line data={chartData} /> */}
+        <Line
+          data={chartData}
+          options={{
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "Period",
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: "Cash Flows ($)",
+                },
+              },
+            },
+          }}
+        />
       </Grid>
     </Paper>
   );
