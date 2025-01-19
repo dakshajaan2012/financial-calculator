@@ -5,6 +5,7 @@ import FutureValue from "./components/FutureValue";
 import MortgageCalculator from "./components/MortgageCalculator";
 import EffectiveInterestRate from "./components/EffectiveInterestRate";
 import NPVCalculator from "./components/NPVCalculator";
+import MoneyDurationCalculator from "./components/MoneyDurationCalculator";
 
 const App = () => {
   return (
@@ -24,6 +25,10 @@ const App = () => {
               element={<EffectiveInterestRate />}
             />
             <Route path="/npv-calculator" element={<NPVCalculator />} />
+            <Route
+              path="/money-withdrawal"
+              element={<MoneyDurationCalculator />}
+            />
           </Routes>
         </div>
       </div>

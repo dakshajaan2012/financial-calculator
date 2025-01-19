@@ -22,6 +22,7 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+//import { Payment } from "@mui/icons-material";
 
 /* const formatNumberWithCommas = (number) => {
   return new Intl.NumberFormat("en-US", {
@@ -114,15 +115,32 @@ const MortgageCalculator = () => {
 
   const groupedSchedule = groupByYear(schedule);
 
-  const totalPrincipal = parseFloat(principal);
-  const totalInterest = parseFloat(summary.totalInterest.replace("$", ""));
-  const totalPayments = totalPrincipal + totalInterest;
+  //const totalPrincipal = parseFloat(principal);
 
-  const data = [
+  const totalPrincipal = isNaN(parseFloat(principal))
+    ? 0
+    : parseFloat(principal);
+
+  //const totalInterest = parseFloat(summary.totalInterest.replace("$", ""));
+  const totalInterest = isNaN(
+    parseFloat(summary.totalInterest.replace("$", ""))
+  )
+    ? 0
+    : parseFloat(summary.totalInterest.replace("$", ""));
+
+  const totalPayments = totalPrincipal + totalInterest;
+  const data =
+    totalPayments > 0
+      ? [
+          ((totalPrincipal / totalPayments) * 100).toFixed(1),
+          ((totalInterest / totalPayments) * 100).toFixed(1),
+        ]
+      : [0, 0];
+
+  /*  const data = [
     ((totalPrincipal / totalPayments) * 100).toFixed(1),
     ((totalInterest / totalPayments) * 100).toFixed(1),
-  ];
-
+  ]; */
   return (
     <Paper style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
       <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
@@ -273,7 +291,7 @@ const MortgageCalculator = () => {
                         height: "10px",
                         backgroundColor:
                           /*     index % 2 === 0 ? "#f5f5f5" : "#ffffff", */
-                          index % 2 === 0 ? "#f5f5f5" : "#F7C5CC",
+                          index % 2 === 0 ? "#c8e6e8" : "#ebece6",
                       }}
                     >
                       <TableCell>{item.Period}</TableCell>
@@ -316,6 +334,7 @@ const MortgageCalculator = () => {
                     ),
                     fill: false,
                     borderColor: "rgb(75, 192, 192)",
+                    borderWidth: 1.5,
                     tension: 0.1,
                     pointRadius: 0,
                   },
@@ -326,6 +345,7 @@ const MortgageCalculator = () => {
                     ),
                     fill: false,
                     borderColor: "rgb(153, 102, 255)",
+                    borderWidth: 1.5,
                     tension: 0.1,
                     pointRadius: 0,
                   },
@@ -334,6 +354,7 @@ const MortgageCalculator = () => {
                     data: schedule.map((item) => parseFloat(item.Balance)),
                     fill: false,
                     borderColor: "rgb(255, 99, 132)",
+                    borderWidth: 1.5,
                     tension: 0.1,
                     pointRadius: 0,
                   },

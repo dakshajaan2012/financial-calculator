@@ -130,16 +130,16 @@ const FutureValue = () => {
 
     // Calculate total returns (including interest)
     fv = balance; // Final balance after all years
-    let totalReturns = fv.toFixed(2);
+    let totalReturns = fv.toFixed(0);
 
     // Calculate present value
     let presentValue = fv * (1 / (1 + ir) ** yrs_x);
 
     setResults({
       totalReturns: `$${totalReturns}`,
-      totalInterest: `$${totalInterest.toFixed(2)}`,
-      totalDeposit: `$${totalDeposit.toFixed(2)}`,
-      presentValue: `$${presentValue.toFixed(2)}`,
+      totalInterest: `$${totalInterest.toFixed(0)}`,
+      totalDeposit: `$${totalDeposit.toFixed(0)}`,
+      presentValue: `$${presentValue.toFixed(0)}`,
     });
 
     setYearlySchedule(schedule);
@@ -168,20 +168,66 @@ const FutureValue = () => {
       [year]: !prevExpandedYears[year],
     }));
   };
+  const totalStartingAmount = isNaN(parseFloat(startAmount))
+    ? 0
+    : parseFloat(startAmount);
 
-  const totalStartingAmount = parseFloat(startAmount);
-  const totalYearlyDeposits = yearlyDeposit * noOfYears;
-  const totalInterest = parseFloat(results.totalInterest.replace("$", ""));
-  const totalAmount = totalStartingAmount + totalYearlyDeposits + totalInterest;
+  const totalYearlyDeposits = isNaN(yearlyDeposit * noOfYears)
+    ? 0
+    : yearlyDeposit * noOfYears; // Use the computed value, not the condition
+
+  const totalInterest = isNaN(
+    parseFloat(results.totalInterest.replace("$", ""))
+  )
+    ? 0
+    : parseFloat(results.totalInterest.replace("$", ""));
+
+  const totalAmount = isNaN(
+    totalStartingAmount + totalYearlyDeposits + totalInterest
+  )
+    ? 0
+    : totalStartingAmount + totalYearlyDeposits + totalInterest;
+
+  const data =
+    totalAmount > 0
+      ? [
+          ((totalStartingAmount / totalAmount) * 100).toFixed(1),
+          ((totalYearlyDeposits / totalAmount) * 100).toFixed(1),
+          ((totalInterest / totalAmount) * 100).toFixed(1),
+        ]
+      : [0, 0, 0]; // Avoid dividing by 0 or showing NaN percentages
+
+  /*   const totalStartingAmount = isNaN(parseFloat(startAmount))
+    ? 0
+    : parseFloat(startAmount);
+  const totalYearlyDeposits = isNaN(yearlyDeposit * noOfYears)
+    ? 0
+    : isNaN(yearlyDeposit * noOfYears);
+  const totalInterest = isNaN(
+    parseFloat(results.totalInterest.replace("$", ""))
+  )
+    ? 0
+    : parseFloat(results.totalInterest.replace("$", ""));
+  const totalAmount = isNaN(
+    totalStartingAmount + totalYearlyDeposits + totalInterest
+  )
+    ? 0
+    : totalStartingAmount + totalYearlyDeposits + totalInterest;
 
   const data = [
     ((totalStartingAmount / totalAmount) * 100).toFixed(1),
     ((totalYearlyDeposits / totalAmount) * 100).toFixed(1),
     ((totalInterest / totalAmount) * 100).toFixed(1),
-  ];
+  ]; */
 
   return (
-    <Paper style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
+    <Paper
+      style={{
+        padding: 20,
+        maxWidth: 1200,
+        margin: "0 auto",
+      }}
+    >
       <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
         Future Value
       </Typography>
@@ -337,7 +383,7 @@ const FutureValue = () => {
               {/*  <TableCell>Ending Deposit</TableCell> */}
               <TableCell>Interest</TableCell>
               <TableCell>Yearly Balance</TableCell>
-              <TableCell>Details</TableCell>
+              <TableCell>Monthly Details</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -349,7 +395,7 @@ const FutureValue = () => {
                   sx={{
                     backgroundColor:
                       /*     index % 2 === 0 ? "#f5f5f5" : "#ffffff", */
-                      index % 2 === 0 ? "#f5f5f5" : "#F7C5CC",
+                      index % 2 === 0 ? "#F4DF4EFF" : "#989398FF",
                   }}
                 >
                   <TableCell sx={{ height: 0.1 }}>{item.Year}</TableCell>
@@ -441,6 +487,7 @@ const FutureValue = () => {
                     ),
                     fill: false,
                     borderColor: "rgb(75, 192, 192)",
+                    borderWidth: 1.5,
                     tension: 0.1,
                     pointRadius: 0,
                   },
@@ -461,6 +508,7 @@ const FutureValue = () => {
                     ),
                     fill: false,
                     borderColor: "rgb(255, 206, 86)",
+                    borderWidth: 1.5,
                     tension: 0.1,
                     pointRadius: 0,
                   },
@@ -471,6 +519,7 @@ const FutureValue = () => {
                     ),
                     fill: false,
                     borderColor: "rgb(255, 99, 132)",
+                    borderWidth: 1.5,
                     tension: 0.1,
                     pointRadius: 0,
                   },

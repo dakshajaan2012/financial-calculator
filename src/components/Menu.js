@@ -12,6 +12,9 @@ function Menu({ handleNavigation }) {
       <button onClick={() => handleNavigation("EffectiveInterest")}>
         Effective Interest
       </button>
+      <button onClick={() => handleNavigation("MoneyDurationCalculator")}>
+        Money Withdrawals
+      </button>
     </div>
   );
 }

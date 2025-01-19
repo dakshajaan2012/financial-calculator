@@ -1,55 +1,44 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-//import { makeStyles } from "@mui/styles";
-
-/* const useStyles = makeStyles((theme) => ({
-  button: {
-    color: "red", // Initial color for the button text
-    "&.Mui-disabled": {
-      color: "lightgrey", // Color for disabled state with high specificity
-    },
-  },
-})); */
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 
 const Navbar = () => {
-  //const classes = useStyles();
   const location = useLocation();
 
+  const navItems = [
+    { path: "/future-value", label: "Future Value" },
+    { path: "/mortgage-calculator", label: "Mortgage" },
+    { path: "/effective-interest-rate", label: "Effective Interest" },
+    { path: "/npv-calculator", label: "NPV & IRR" },
+    { path: "/money-withdrawal", label: "Money Withdrawals" },
+  ];
+
   return (
-    <AppBar position="fixed" style={{ backgroundColor: "lightgrey" }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        backgroundColor: "lightgray",
+        boxShadow: "none",
+        //borderBottom: "0.5px solid gray",
+      }}
+    >
       <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1, color: "#1976D2" }}>
-          Financial Calculator
+        <Typography variant="h6" sx={{ flexGrow: 1, color: "#000" }}>
+          Financial Calculator, Developer: Sunil
         </Typography>
-        <Button
-          component={Link}
-          to="/future-value"
-          disabled={location.pathname === "/future-value"}
-        >
-          Future Value
-        </Button>
-        <Button
-          component={Link}
-          to="/mortgage-calculator"
-          disabled={location.pathname === "/mortgage-calculator"}
-        >
-          Mortgage
-        </Button>
-        <Button
-          component={Link}
-          to="/effective-interest-rate"
-          disabled={location.pathname === "/effective-interest-rate"}
-        >
-          Effective Interest
-        </Button>
-        <Button
-          component={Link}
-          to="/npv-calculator"
-          disabled={location.pathname === "/npv-calculator"}
-        >
-          NPV & IRR
-        </Button>
+
+        <Box sx={{ display: "flex", gap: 2 }}>
+          {navItems.map((item) => (
+            <Button
+              key={item.path}
+              component={Link}
+              to={item.path}
+              disabled={location.pathname === item.path}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </Box>
       </Toolbar>
     </AppBar>
   );
