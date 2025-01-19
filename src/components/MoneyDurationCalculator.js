@@ -28,7 +28,7 @@ const MoneyDurationCalculator = () => {
   const [principal, setPrincipal] = useState("");
   const [withdrawal, setWithdrawal] = useState("");
   const [interestRate, setInterestRate] = useState("");
-  const [schedule, setSchedule] = useState({});
+  //const [schedule, setSchedule] = useState({});
   const [yearlySummary, setYearlySummary] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [expandedYears, setExpandedYears] = useState({});
@@ -41,7 +41,7 @@ const MoneyDurationCalculator = () => {
 
     if (isNaN(P) || isNaN(W) || isNaN(R) || P <= 0 || W <= 0 || R < 0) {
       alert("Please enter valid numbers.");
-      setSchedule({});
+      //setSchedule({});
       setYearlySummary([]);
       return;
     }
@@ -112,7 +112,7 @@ const MoneyDurationCalculator = () => {
     });
 
     // Update state
-    setSchedule(groupedSchedule);
+    //setSchedule(groupedSchedule);
     setYearlySummary(summary);
     setResult(
       `Your money will last for ${Math.floor(months / 12)} year(s) and ${
@@ -125,7 +125,7 @@ const MoneyDurationCalculator = () => {
     setPrincipal("");
     setWithdrawal("");
     setInterestRate("");
-    setSchedule({});
+    //setSchedule({});
     setYearlySummary([]);
     setResult("");
   };
