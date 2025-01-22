@@ -150,9 +150,10 @@ const NPVCalculator = () => {
     <Paper
       style={{
         padding: 20,
-        maxWidth: 1200,
+        maxWidth: "100%",
         margin: "20px auto",
         marginTop: "20px",
+        backgroundColor: "#f0f4f8",
       }}
     >
       <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
@@ -227,7 +228,7 @@ const NPVCalculator = () => {
         gutterBottom
         style={{ marginTop: 50 }}
       >
-        Results Summary
+        Results Summary:
       </Typography>
       <br />
       <Grid container spacing={3}>
@@ -259,7 +260,7 @@ const NPVCalculator = () => {
         gutterBottom
         style={{ marginTop: 50 }}
       >
-        Chart:
+        Charts:
       </Typography>
       <Grid item xs={12}>
         {/*         <Line data={chartData} /> */}

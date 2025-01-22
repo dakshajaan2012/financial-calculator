@@ -142,7 +142,14 @@ const MortgageCalculator = () => {
     ((totalInterest / totalPayments) * 100).toFixed(1),
   ]; */
   return (
-    <Paper style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
+    <Paper
+      style={{
+        padding: 20,
+        maxWidth: "100%",
+        margin: "0 auto",
+        backgroundColor: "#f0f4f8",
+      }}
+    >
       <Typography variant="h4" align="center" gutterBottom paddingTop="50px">
         Mortgage Calculator
       </Typography>
@@ -213,7 +220,7 @@ const MortgageCalculator = () => {
         gutterBottom
         style={{ marginTop: 20 }}
       >
-        Payment Summary
+        Payment Summary:
       </Typography>
       <br />
       <Grid container spacing={3}>
@@ -256,7 +263,7 @@ const MortgageCalculator = () => {
         gutterBottom
         style={{ marginTop: 20 }}
       >
-        Payment Schedule
+        Payment Schedule:
       </Typography>
       {Object.keys(groupedSchedule).map((year, index) => (
         <Accordion key={index}>
@@ -291,7 +298,7 @@ const MortgageCalculator = () => {
                         height: "10px",
                         backgroundColor:
                           /*     index % 2 === 0 ? "#f5f5f5" : "#ffffff", */
-                          index % 2 === 0 ? "#c8e6e8" : "#ebece6",
+                          index % 2 === 0 ? "#f5f5f5" : "#ffffff",
                       }}
                     >
                       <TableCell>{item.Period}</TableCell>
@@ -318,7 +325,7 @@ const MortgageCalculator = () => {
         gutterBottom
         style={{ marginTop: 20 }}
       >
-        Charts
+        Charts:
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>

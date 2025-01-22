@@ -2,5 +2,6 @@
   font-family: sans-serif;
   text-align: center;
 }
-
-
+.App .MuiPaper-root {
+  background: #000; /* Ensure Material-UI Paper has its background */
+}

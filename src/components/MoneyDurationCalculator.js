@@ -161,14 +161,21 @@ const MoneyDurationCalculator = () => {
       : [0, 0]; // Default to [0, 0] if finalSum is 0 to prevent NaN issues
 
   return (
-    <Paper style={{ padding: 20, maxWidth: 1200, margin: "0 auto" }}>
+    <Paper
+      style={{
+        padding: 20,
+        maxWidth: "100%",
+        margin: "0 auto",
+        backgroundColor: "#f0f4f8",
+      }}
+    >
       <br />
       <Box display="flex" justifyContent="center" mt={4}>
         <Typography
           variant="h4"
           gutterBottom
           align="center"
-          paddingTop="20px"
+          paddingTop="0px"
           paddingBottom="20px"
         >
           Monthly Withdrawal Schedule
@@ -255,7 +262,7 @@ const MoneyDurationCalculator = () => {
         gutterBottom
         style={{ marginTop: 20 }}
       >
-        Results Summary
+        Results Summary:
       </Typography>
       <br />
 
@@ -308,7 +315,7 @@ const MoneyDurationCalculator = () => {
       {yearlySummary.length > 0 && (
         <Paper>
           <Typography variant="h6" align="center">
-            Yearly Summary:
+            Yearly Schedule:
           </Typography>
           <TableContainer>
             <Table>
@@ -406,7 +413,7 @@ const MoneyDurationCalculator = () => {
         gutterBottom
         style={{ marginTop: 20 }}
       >
-        Charts
+        Charts:
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>

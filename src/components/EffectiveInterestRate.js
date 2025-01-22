@@ -177,7 +177,7 @@ const EffectiveInterestRate = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ maxWidth: "100%", backgroundColor: "#f0f4f8" }}>
       <br />
       <Box display="flex" justifyContent="center" mt={4}>
         <Typography
@@ -301,10 +301,10 @@ const EffectiveInterestRate = () => {
       <br />
       <Box display="flex" justifyContent="center" mt={4}>
         <Typography variant="h6" align="center">
-          Chart:
+          Charts:
         </Typography>
       </Box>
-      <Paper style={{ padding: 16, height: "380px" }}>
+      <Paper style={{ padding: 16, height: "380px", marginBottom: 16 }}>
         <Bar
           data={chartData}
           options={{
